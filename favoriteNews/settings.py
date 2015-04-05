@@ -61,7 +61,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'favorite_news',
         'USER': 'root',
-        'PASSWORD': 'Lingy520',
+        'PASSWORD': 'zengzheying@icloud.com',
+        'HOST': '120.25.217.247',
     }
 }
 
@@ -82,7 +83,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.path.join(BASE_DIR,  'static/')
+
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR,  'static/')
+
+)
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),

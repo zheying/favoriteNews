@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from tools import Response
 from business import UserInfo
 from const import *
 # Create your views here.
+from models import *
+from django.core.exceptions import ObjectDoesNotExist
 
 @csrf_exempt
 def login(req):
@@ -18,3 +20,12 @@ def login(req):
         return HttpResponse(Response.response({}))
     else:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS, "无效的请求参数"))
+
+def getNews(req):
+    news = SinaNews.objects.all()[:10]
+    return HttpResponse(Response.response({"list": list(news)}))
+
+
+def viewNews(req, news_id):
+    news = SinaNews.objects.get(id=news_id)
+    return HttpResponseRedirect(news.pageurl)

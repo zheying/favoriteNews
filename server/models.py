@@ -11,16 +11,20 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+class SinaNews(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    cat = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
+    date = models.DateTimeField()
+    source = models.CharField(max_length=200)
+    content = models.TextField()
+    tags = models.CharField(max_length=200)
+    picurl = models.CharField(db_column='picUrl', max_length=200)  # Field name made lowercase.
+    pageurl = models.CharField(db_column='pageUrl', max_length=200)  # Field name made lowercase.
 
-# class DjangoMigrations(models.Model):
-#     id = models.IntegerField(primary_key=True)  # AutoField?
-#     app = models.CharField(max_length=255)
-#     name = models.CharField(max_length=255)
-#     applied = models.DateTimeField()
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'django_migrations'
+    class Meta:
+        managed = False
+        db_table = 'sina_news'
 
 class User(models.Model):
     uid = models.CharField(primary_key=True, max_length=80)

@@ -7,7 +7,7 @@ from business import UserInfo
 from const import *
 # Create your views here.
 from models import *
-from django.core.exceptions import ObjectDoesNotExist
+from business.UidTag import *
 
 @csrf_exempt
 def login(req):
@@ -28,4 +28,6 @@ def getNews(req):
 
 def viewNews(req, news_id):
     news = SinaNews.objects.get(id=news_id)
+    uid = req.GET.get('uid', None)
+    UidTagHistory.upateUserViewNewsTags(uid, news.tags)
     return HttpResponseRedirect(news.pageurl)

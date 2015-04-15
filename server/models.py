@@ -11,6 +11,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+
+
+
 class SinaNews(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     cat = models.CharField(max_length=100)
@@ -19,12 +22,57 @@ class SinaNews(models.Model):
     source = models.CharField(max_length=200)
     content = models.TextField()
     tags = models.CharField(max_length=200)
-    picurl = models.CharField(db_column='picUrl', max_length=200)  # Field name made lowercase.
+    picurl = models.CharField(db_column='picUrl', max_length=800)  # Field name made lowercase.
     pageurl = models.CharField(db_column='pageUrl', max_length=200)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'sina_news'
+
+
+class TagsViewHistory(models.Model):
+    uid = models.CharField(primary_key=True, max_length=200)
+    tag = models.CharField(primary_key=True, max_length=200)
+    count = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tags_view_history'
+        unique_together=('uid','tag')
+
+
+class UidLonghobbyTime(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    uid = models.CharField(max_length=2000)
+    longhobby = models.CharField(db_column='longHobby', max_length=2000)  # Field name made lowercase.
+    time = models.DateField()
+    interval = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'uid_longHobby_time'
+
+
+class UidNewscatNum(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    uid = models.CharField(max_length=2000)
+    newscat = models.CharField(db_column='newsCat', max_length=2000)  # Field name made lowercase.
+    num = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'uid_newsCat_num'
+
+
+class UidShorthobbyTime(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    uid = models.CharField(max_length=2000)
+    shorthobby = models.CharField(db_column='shortHobby', max_length=2000)  # Field name made lowercase.
+    time = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'uid_shortHobby_time'
 
 class User(models.Model):
     uid = models.CharField(primary_key=True, max_length=80)
@@ -35,13 +83,11 @@ class User(models.Model):
         managed = False
         db_table = 'user'
 
-class Tags(models.Model):
+
+class UidTags(models.Model):
     uid = models.ForeignKey('User', db_column='uid', primary_key=True)
     tag = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'tags'
-
-
-
+        db_table = 'uid_tags'

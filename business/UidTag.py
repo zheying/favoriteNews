@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 __author__ = 'zengzheying'
 
 from server.models import TagsViewHistory

@@ -31,5 +31,5 @@ def getTags(u):
         for k in tag.iterkeys():
             if k != 'weight' and k != 'flag':
                user_tags = user_tags + tag[k] + "\n"
-    t = Tags(uid=u, tag=user_tags)
+    t = UidTags(uid=u, tag=user_tags)
     t.save()

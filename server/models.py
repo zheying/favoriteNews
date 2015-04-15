@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -65,7 +66,7 @@ class UidNewscatNum(models.Model):
 
 
 class UidShorthobbyTime(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
+    id = models.AutoField(primary_key=True)
     uid = models.CharField(max_length=2000)
     shorthobby = models.CharField(db_column='shortHobby', max_length=2000)  # Field name made lowercase.
     time = models.DateField()
@@ -91,3 +92,14 @@ class UidTags(models.Model):
     class Meta:
         managed = False
         db_table = 'uid_tags'
+
+
+class NewsComment(models.Model):
+    uid = models.CharField(max_length=80)
+    news_id = models.IntegerField()
+    content = models.TextField()
+    time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'news_comment'

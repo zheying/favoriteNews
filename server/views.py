@@ -27,15 +27,15 @@ def login(req):
                                                    STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 #用户获取新闻
 def getNews(req):
-    try:
-        uid = req.GET.get('uid')
+    # try:
+        uid = req.GET.get('uid', None)
         page = int(req.GET.get('page'))
         cat = int(req.GET.get('cat'))
         news = NewsOperator.getNews(uid, cat, page)
         return HttpResponse(Response.response({'list': list(news)}))
-    except Exception, e:
-        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
-                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
+    # except Exception, e:
+    #     return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+    #                                                STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 #用户阅读新闻
 def viewNews(req, news_id):

@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'zengzheying'
 from server.const import *
+from server.models import *
 class NewsOperator:
 
     @classmethod
@@ -25,6 +26,6 @@ class NewsOperator:
         elif cat == NEWS_CATALOG_FINANCE:  #财经新闻
             news = SinaNews.objects.filter(cat=STRING_NEWS_CATALOG_FINANCE).order_by('-date')
 
-        start = (page - 1) * PAGE_SIZE
-        end = page * PAGE_SIZE
+        start = page * PAGE_SIZE
+        end = (page + 1) * PAGE_SIZE
         return news[start:end]

@@ -6,6 +6,7 @@ from django.db import models
 import json
 import time
 from datetime import datetime
+import pytz
 
 class MyEncoder(json.JSONEncoder):
     def default(self,obj):
@@ -16,11 +17,11 @@ class MyEncoder(json.JSONEncoder):
             if d.has_key('content'):
                 d.pop('content')
             if d.has_key('date') and isinstance(d['date'], datetime):
-                # d['time'] = int(time.mktime(d['time'].timetuple()))
-                d['date'] = int(time.mktime(datetime.now().timetuple()))
-            if d.has_key('date') and d['date'] is None:
-                # d['time'] = int(time.mktime(d['time'].timetuple()))
-                d['date'] = int(time.mktime(datetime.now().timetuple()))
+                d['date'] = int(time.mktime(d['date'].timetuple())) - 8 * 60 * 60
+                # d['date'] = int(time.mktime(datetime.now().timetuple()))
+            # if d.has_key('date') and d['date'] is None:
+            #     d['date'] = int(time.mktime(d['date'].timetuple()))
+                # d['date'] = int(time.mktime(datetime.now().timetuple()))
             return d
         return json.JSONEncoder.default(self, obj)
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="robots" content="all" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}static/news_detail_sytle.css">
+	</head>
+
+	<body>
+		<header>
+			<h1> {{ news.title }} </h1> +
+			<div class="subtitle">
+				<a id="source" href="{{ news.source_url }}">{{ news.source }}</a>
+				<time> {{ news.date }} </time>
+			</div>
+		</header>
+		<article>
+            {{ news.content }}
+        </article>
+	</body>
+
+</html>

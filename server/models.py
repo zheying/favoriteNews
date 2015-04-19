@@ -22,9 +22,10 @@ class SinaNews(models.Model):
     date = models.DateTimeField()
     source = models.CharField(max_length=200)
     content = models.TextField()
-    tags = models.CharField(max_length=200)
+    tags = models.TextField()
     picurl = models.CharField(db_column='picUrl', max_length=800)  # Field name made lowercase.
     pageurl = models.CharField(db_column='pageUrl', max_length=200)  # Field name made lowercase.
+    mobile_html = models.TextField()
 
     class Meta:
         managed = False

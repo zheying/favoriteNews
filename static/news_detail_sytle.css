@@ -159,6 +159,12 @@ h1,h2,h3,h4,h5,h6{
   color:#303030
 }
 
+article video {
+  width: 100%;
+  height: auto;
+  background: #000;
+}
+
 
 
 h1,h2,h3,h4,h5,h6{

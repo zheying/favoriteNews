@@ -18,7 +18,6 @@ def login(uid, name, token):
         return u
 
 def getTags(u):
-    import urllib
     import urllib2
     url = "https://api.weibo.com/2/tags.json?uid=" + u.uid + "&access_token=" + u.token + "&source=942411083"
     req=urllib2.Request(url)

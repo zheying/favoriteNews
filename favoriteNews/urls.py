@@ -10,10 +10,10 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
 
     url(r'^login/', 'server.views.login', name='login'),  #登录链接
-    url(r'^news/', 'server.views.getNews', name='getNews'),   #获取新闻链接
+    url(r'^news/', 'server.views.get_news', name='getNews'),   #获取新闻链接
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATICFILES_DIRS, 'show_indexes': True}),  #静态文件链接
-    url(r'^view_news/(?P<news_id>\d+)/$', 'server.views.viewNews', name='viewNews'), #用户浏览新闻
+    url(r'^view_news/(?P<news_id>\d+)/$', 'server.views.view_news', name='viewNews'), #用户浏览新闻
     url(r'^hobby/$', 'server.views.addShortHobby', name='hobby'),  #用户添加短期兴趣
     url(r'^comment/$', 'server.views.comment', name='comment'),  #用户评论新闻
     url(r'^pull_comments/$', 'server.views.pull_comment_list', name='pull_comments'), #拉取评论列表

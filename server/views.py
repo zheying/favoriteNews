@@ -110,8 +110,21 @@ def delete_comment(req):
 
 
 #拉取新闻的评论列表
+@csrf_exempt
 def pull_comment_list(req):
-    pass
+    # try:
+    news_id = req.POST.get('news_id')
+    uid = req.POST.get('uid')
+    token = req.POST.get('token')
+    if not UserInfo.verify_user(uid, token):
+        return HttpResponse(Response.responseError(UID_NOT_MATCH, STRING_UID_NOT_MATCH))
+    if NewsOperator.find_news_by_id(news_id) is None:
+        return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+    comment_list = CommentHelper.get_comment_list_by_news_id(uid, news_id)
+    return HttpResponse(Response.response(comment_list))
+    # except Exception, e:
+    #     return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+    #                                                STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 
 #对用户的分享新闻进行记录

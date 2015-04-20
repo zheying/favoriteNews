@@ -3,6 +3,7 @@ __author__ = 'zengzheying'
 from datetime import datetime
 from server.models import *
 from django.core.exceptions import ObjectDoesNotExist
+import UserInfo
 
 class CommentHelper:
 
@@ -25,3 +26,23 @@ class CommentHelper:
         except ObjectDoesNotExist, e:
             raise e
 
+    @classmethod
+    def get_comment_list_by_news_id(cls, uid, news_id):
+        comment_list = []
+        comments = NewsComment.objects.filter(news_id=news_id)
+        if comments is not None:
+            for comment in comments:
+                comment_dict = {}
+                comment_dict['cid'] = comment.id
+                if comment.uid == uid:
+                    comment_dict['uid'] = comment.uid
+                else:
+                    comment_dict['uid'] = ''
+                comment_dict['news_id'] = comment.news_id
+                comment_dict['content'] = comment.content
+                u = UserInfo.find_user_by_id(comment.uid)
+                comment_dict['avatar'] = u.avatar
+                comment_dict['time'] = comment.time
+                comment_dict['user_name'] = u.name
+                comment_list.append(comment_dict)
+        return comment_list

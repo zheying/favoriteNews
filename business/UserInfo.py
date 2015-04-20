@@ -39,3 +39,9 @@ def verify_user(uid, token):
         return u.token == token
     except ObjectDoesNotExist:
         return False
+
+def find_user_by_id(uid):
+    try:
+        return User.objects.get(uid=uid)
+    except ObjectDoesNotExist:
+        return None

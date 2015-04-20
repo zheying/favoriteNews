@@ -80,6 +80,7 @@ class User(models.Model):
     uid = models.CharField(primary_key=True, max_length=80)
     name = models.CharField(max_length=100)
     token = models.CharField(max_length=100)
+    avatar = models.CharField(max_length=500)
 
     class Meta:
         managed = False

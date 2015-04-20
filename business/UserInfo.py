@@ -17,10 +17,10 @@ def login(uid, name, token):
         u.save()
         return u
 
-def getTags(u):
+def get_tags(u):
     import urllib2
     url = "https://api.weibo.com/2/tags.json?uid=" + u.uid + "&access_token=" + u.token + "&source=942411083"
-    req=urllib2.Request(url)
+    req = urllib2.Request(url)
     res_data = urllib2.urlopen(req)
     res = res_data.read()
     import json
@@ -32,3 +32,10 @@ def getTags(u):
                user_tags = user_tags + tag[k] + "\n"
     t = UidTags(uid=u, tag=user_tags)
     t.save()
+
+def verify_user(uid, token):
+    try:
+        u = User.objects.get(uid=uid)
+        return u.token == token
+    except ObjectDoesNotExist:
+        return False

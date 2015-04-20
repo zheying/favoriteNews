@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 class CommentHelper:
 
     @classmethod
-    def addComment(cls, uid, news_id, content):
+    def add_comment(cls, uid, news_id, content):
         comment = NewsComment()
         comment.uid = uid
         comment.news_id = news_id
@@ -16,7 +16,7 @@ class CommentHelper:
         comment.save()
 
     @classmethod
-    def deleteComment(cls, uid, cid):
+    def delete_comment(cls, uid, cid):
         try:
             comment = NewsComment.objects.get(id=cid)
             if comment.uid != uid:

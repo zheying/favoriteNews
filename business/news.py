@@ -2,10 +2,13 @@
 __author__ = 'zengzheying'
 from server.const import *
 from server.models import *
+from django.core.exceptions import ObjectDoesNotExist
+
+
 class NewsOperator:
 
     @classmethod
-    def getNews(cls, uid, cat, page):
+    def get_news(cls, uid, cat, page):
         news = []
         if cat == NEWS_CATALOG_RECOMMEND:  #推荐新闻
             news = SinaNews.objects.order_by('-date')
@@ -29,3 +32,11 @@ class NewsOperator:
         start = page * PAGE_SIZE
         end = (page + 1) * PAGE_SIZE
         return news[start:end]
+
+    @classmethod
+    def find_news_by_id(cls, news_id):
+        try:
+            news = SinaNews.objects.get(id=news_id)
+            return news
+        except ObjectDoesNotExist:
+            return None

@@ -21,7 +21,7 @@ def login(req):
     name = req.POST.get('name')
     if uid is not None and token is not None and name is not None:
         u = UserInfo.login(uid, name, token)
-        UserInfo.getTags(u)
+        UserInfo.get_tags(u)
         return HttpResponse(Response.response(None))
     else:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
@@ -32,7 +32,7 @@ def get_news(req):
         uid = req.GET.get('uid', None)
         page = int(req.GET.get('page'))
         cat = int(req.GET.get('cat'))
-        news = NewsOperator.getNews(uid, cat, page)
+        news = NewsOperator.get_news(uid, cat, page)
         return HttpResponse(Response.response({'list': list(news)}))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
@@ -57,8 +57,8 @@ def view_news(req, news_id):
     else:
         return HttpResponse(content)
 
-#用户设置短期兴趣
-def addShortHobby(req):
+'''用户设置短期兴趣'''
+def add_short_hobby(req):
     try:
         uid = req.GET.get('uid')
         tag = req.GET.get('tag')
@@ -76,7 +76,12 @@ def comment(req):
         uid = req.POST.get('uid')
         news_id = req.POST.get('news_id')
         content = req.POST.get('content')
-        CommentHelper.addComment(uid, news_id, content)
+        token = req.POST.get('token')
+        if not UserInfo.verify_user(uid, token):
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        if NewsOperator.find_news_by_id(news_id) is None:
+            return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+        CommentHelper.add_comment(uid, news_id, content)
         return HttpResponse(Response.response(None))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
@@ -89,16 +94,19 @@ def delete_comment(req):
     try:
         uid = req.POST.get('uid')
         cid = req.POST.get('cid')
+        token = req.POST.get('token')
+        if not UserInfo.verify_user(uid, token):
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        try:
+            CommentHelper.delete_comment(uid, cid)
+            return HttpResponse(Response.response(None))
+        except ValueError, e:
+            return HttpResponse(Response.responseError(UID_NOT_MATCH, STRING_UID_NOT_MATCH))
+        except ObjectDoesNotExist:
+            return HttpResponse(Response.responseError(NO_SUCH_COMMENT, STRING_NO_SUCH_COMMENT))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
                                                    STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
-    try:
-        CommentHelper.deleteComment(uid, cid)
-        return HttpResponse(Response.response(None))
-    except ObjectDoesNotExist, e:
-        pass
-    except ValueError, e:
-        return HttpResponse(Response.responseError(UID_NOT_MATCH, STRING_UID_NOT_MATCH))
 
 
 #拉取新闻的评论列表

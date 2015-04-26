@@ -3,6 +3,7 @@ __author__ = 'zengzheying'
 from server.const import *
 from server.models import *
 from django.core.exceptions import ObjectDoesNotExist
+from business.comment import CommentHelper
 
 
 class NewsOperator:
@@ -31,7 +32,21 @@ class NewsOperator:
 
         start = page * PAGE_SIZE
         end = (page + 1) * PAGE_SIZE
-        return news[start:end]
+
+        result = []
+        for v in news[start:end]:
+            item = {}
+            item['cat'] = v.cat
+            item['id'] = v.id
+            item['title'] = v.title
+            item['source'] = v.source
+            item['pageurl'] = v.pageurl
+            item['date'] = v.date
+            item['picurl'] = v.picurl
+            item['comment_count'] = CommentHelper.get_comment_count_by_news_id(v.id)
+            result.append(item)
+
+        return result
 
     @classmethod
     def find_news_by_id(cls, news_id):

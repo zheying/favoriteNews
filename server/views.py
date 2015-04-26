@@ -19,8 +19,9 @@ def login(req):
     uid = req.POST.get('uid')
     token = req.POST.get('token')
     name = req.POST.get('name')
-    if uid is not None and token is not None and name is not None:
-        u = UserInfo.login(uid, name, token)
+    avatar = req.POST.get('avatar')
+    if uid is not None and token is not None and name is not None and avatar is not None:
+        u = UserInfo.login(uid, name, token, avatar)
         UserInfo.get_tags(u)
         return HttpResponse(Response.response(None))
     else:
@@ -33,7 +34,7 @@ def get_news(req):
         page = int(req.GET.get('page'))
         cat = int(req.GET.get('cat'))
         news = NewsOperator.get_news(uid, cat, page)
-        return HttpResponse(Response.response({'list': list(news)}))
+        return HttpResponse(Response.response({'list': news}))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
                                                    STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
@@ -121,7 +122,7 @@ def pull_comment_list(req):
     if NewsOperator.find_news_by_id(news_id) is None:
         return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
     comment_list = CommentHelper.get_comment_list_by_news_id(uid, news_id)
-    return HttpResponse(Response.response(comment_list))
+    return HttpResponse(Response.response({'list': comment_list}))
     # except Exception, e:
     #     return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
     #                                                STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))

@@ -170,25 +170,25 @@ class NewsParser:
 
     @classmethod
     def parse_data_in_database(cls):
-        # news_list = SinaNews.objects.filter(mobile_html='')
-        # print '还有', len(news_list), '条需要处理'
-        # for news in news_list:
-        #     if news.mobile_html is None or news.mobile_html.strip() == '':
-        #         try:
-        #             html = NewsParser.get_mobile_news(news.pageurl)
-        #             if html is not None:
-        #                 news.mobile_html = html
-        #             else:
-        #                 news.mobile_html = ''
-        #             news.save()
-        #         except Exception, e:
-        #             news.mobile_html = ''
-        #             news.save()
-        news_list = SinaNews.objects.filter(tags='n|u|l|l| |t|a|g')
+        news_list = SinaNews.objects.filter(mobile_html='')
         print '还有', len(news_list), '条需要处理'
         for news in news_list:
-            news.tags = 'null tag'
-            news.save()
+            if news.mobile_html is None or news.mobile_html.strip() == '':
+                try:
+                    html = NewsParser.get_mobile_news(news.pageurl)
+                    if html is not None:
+                        news.mobile_html = html
+                    else:
+                        news.mobile_html = ''
+                    news.save()
+                except Exception, e:
+                    news.mobile_html = ''
+                    news.save()
+        # news_list = SinaNews.objects.filter(tags='n|u|l|l| |t|a|g')
+        # print '还有', len(news_list), '条需要处理'
+        # for news in news_list:
+        #     news.tags = 'null tag'
+        #     news.save()
 
 if __name__ == '__main__':
     print NewsParser.get_mobile_news("http://news.sina.com.cn/w/2015-04-09/165331698951.shtml")

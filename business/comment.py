@@ -46,3 +46,11 @@ class CommentHelper:
                 comment_dict['user_name'] = u.name
                 comment_list.append(comment_dict)
         return comment_list
+
+
+    @classmethod
+    def get_comment_count_by_news_id(cls, news_id):
+        comments = NewsComment.objects.filter(news_id=news_id)
+        if comments is None:
+            return 0
+        return comments.count()

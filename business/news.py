@@ -44,6 +44,7 @@ class NewsOperator:
             item['date'] = v.date
             item['picurl'] = v.picurl
             item['comment_count'] = CommentHelper.get_comment_count_by_news_id(v.id)
+            item['tags'] = v.tags
             result.append(item)
 
         return result

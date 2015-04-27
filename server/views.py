@@ -59,11 +59,12 @@ def view_news(req, news_id):
         return HttpResponse(content)
 
 '''用户设置短期兴趣'''
+@csrf_exempt
 def add_short_hobby(req):
     try:
-        uid = req.GET.get('uid')
-        tag = req.GET.get('tag')
-        ShortTimeHobby.addHobby(uid, tag)
+        uid = req.POST.get('uid')
+        tag = req.POST.get('tag')
+        # ShortTimeHobby.addHobby(uid, tag)
         return HttpResponse(Response.response(None))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,

@@ -40,7 +40,7 @@ class TagsViewHistory(models.Model):
     class Meta:
         managed = False
         db_table = 'tags_view_history'
-        unique_together=('uid','tag')
+        unique_together = ('uid', 'tag')
 
 
 class UidLonghobbyTime(models.Model):
@@ -105,3 +105,37 @@ class NewsComment(models.Model):
     class Meta:
         managed = False
         db_table = 'news_comment'
+
+
+class NewsCollect(models.Model):
+    user = models.ForeignKey('User', db_column='uid', primary_key=True)
+    news = models.ForeignKey('SinaNews', db_column='news_id', primary_key=True)
+    collect_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'news_collect'
+        unique_together = ('user', 'news')
+
+
+class UserDislikeNews(models.Model):
+    user = models.ForeignKey(User, db_column='uid', primary_key=True)
+    news = models.ForeignKey(SinaNews, db_column='news_id', primary_key=True)
+    time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_dislike_news'
+        unique_together = ('user', 'news')
+
+
+class UserShare(models.Model):
+    user = models.ForeignKey(User, db_column='uid', primary_key=True)
+    news = models.ForeignKey(SinaNews, db_column='news_id', primary_key=True)
+    time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_share'
+        unique_together = ('user', 'news')
+

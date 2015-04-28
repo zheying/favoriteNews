@@ -4,6 +4,7 @@ from datetime import datetime
 from server.models import *
 from django.core.exceptions import ObjectDoesNotExist
 import UserInfo
+import pytz
 
 class CommentHelper:
 
@@ -13,7 +14,7 @@ class CommentHelper:
         comment.uid = uid
         comment.news_id = news_id
         comment.content = content
-        comment.time = datetime.now()
+        comment.time = datetime.now(pytz.timezone('Asia/Shanghai'))
         comment.save()
 
     @classmethod

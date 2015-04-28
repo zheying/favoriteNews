@@ -3,6 +3,7 @@ from server.models import *
 from django.core.exceptions import ObjectDoesNotExist
 __author__ = 'zengzheying'
 
+
 def login(uid, name, token, avatar):
     try:
         u = User.objects.all().get(uid=uid)
@@ -18,6 +19,7 @@ def login(uid, name, token, avatar):
         u = User(uid=uid, name=name, token=token, avatar=avatar)
         u.save()
         return u
+
 
 def get_tags(u):
     import urllib2
@@ -35,6 +37,7 @@ def get_tags(u):
     t = UidTags(uid=u, tag=user_tags)
     t.save()
 
+
 def verify_user(uid, token):
     try:
         u = User.objects.get(uid=uid)
@@ -42,8 +45,20 @@ def verify_user(uid, token):
     except ObjectDoesNotExist:
         return False
 
-def find_user_by_id(uid):
+
+def get_user(uid, token):
     try:
-        return User.objects.get(uid=uid)
+        u = User.objects.get(uid=uid)
+        if u.token == token:
+            return u
+        else:
+            return None
+    except ObjectDoesNotExist:
+        return None
+
+
+def find_user_by_id(uid, token):
+    try:
+        return User.objects.get(uid=uid, token=token)
     except ObjectDoesNotExist:
         return None

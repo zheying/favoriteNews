@@ -35,7 +35,7 @@ def get_news(req):
         cat = int(req.GET.get('cat'))
         news = NewsOperator.get_news(uid, cat, page)
         return HttpResponse(Response.response({'list': news}))
-    except Exception, e:
+    except ValueError, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
                                                    STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
@@ -64,7 +64,7 @@ def add_short_hobby(req):
     try:
         uid = req.POST.get('uid')
         tag = req.POST.get('tag')
-        # ShortTimeHobby.addHobby(uid, tag)
+        ShortTimeHobby.addHobby(uid, tag)
         return HttpResponse(Response.response(None))
     except Exception, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
@@ -114,37 +114,93 @@ def delete_comment(req):
 #拉取新闻的评论列表
 @csrf_exempt
 def pull_comment_list(req):
-    # try:
-    news_id = req.POST.get('news_id')
-    uid = req.POST.get('uid')
-    token = req.POST.get('token')
-    if not UserInfo.verify_user(uid, token):
-        return HttpResponse(Response.responseError(UID_NOT_MATCH, STRING_UID_NOT_MATCH))
-    if NewsOperator.find_news_by_id(news_id) is None:
-        return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
-    comment_list = CommentHelper.get_comment_list_by_news_id(uid, news_id)
-    return HttpResponse(Response.response({'list': comment_list}))
-    # except Exception, e:
-    #     return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
-    #                                                STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
+    try:
+        news_id = req.POST.get('news_id')
+        uid = req.POST.get('uid')
+        token = req.POST.get('token')
+        if not UserInfo.verify_user(uid, token):
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        if NewsOperator.find_news_by_id(news_id) is None:
+            return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+        comment_list = CommentHelper.get_comment_list_by_news_id(uid, news_id)
+        return HttpResponse(Response.response({'list': comment_list}))
+    except ValueError, e:
+        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 
 #对用户的分享新闻进行记录
+@csrf_exempt
 def share(req):
-    pass
+    try:
+        uid = req.POST.get('uid')
+        token = req.POST.get('token')
+        news_id = req.POST.get('news_id')
+        user = UserInfo.find_user_by_id(uid, token)
+        if user is None:
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        news = NewsOperator.find_news_by_id(news_id)
+        if news is None:
+            return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+        NewsOperator.add_share_news(user, news)
+        return HttpResponse(Response.response(None))
+    except ValueError, e:
+        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 
 #用户反馈不感兴趣的新闻
+@csrf_exempt
 def not_like_news(req):
-    pass
-
+    try:
+        uid = req.POST.get('uid')
+        token = req.POST.get('token')
+        news_id = req.POST.get('news_id')
+        user = UserInfo.find_user_by_id(uid, token)
+        if user is None:
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        news = NewsOperator.find_news_by_id(news_id)
+        if news is None:
+            return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+        NewsOperator.dislike_news(user, news)
+        return HttpResponse(Response.response(None))
+    except ValueError:
+        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 #用户收藏某些新闻
+@csrf_exempt
 def collect(req):
-    pass
+    try:
+        uid = req.POST.get('uid')
+        token = req.POST.get('token')
+        news_id = req.POST.get('news_id')
+        user = UserInfo.find_user_by_id(uid, token)
+        if user is None:
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        news = NewsOperator.find_news_by_id(news_id)
+        if news is None:
+            return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
+        NewsOperator.collect_news(user, news)
+        return HttpResponse(Response.response(None))
+    except ValueError:
+        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 
 
 #用户获取新闻列表
+@csrf_exempt
 def pull_collect_list(req):
-    pass
+    try:
+        uid = req.POST.get('uid')
+        token = req.POST.get('token')
+        page = int(req.POST.get('page'))
+        user = UserInfo.find_user_by_id(uid, token)
+        if user is None:
+            return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
+        result = NewsOperator.get_collected_news(user, page)
+        return HttpResponse(Response.response({'list': result}))
+    except ValueError:
+        return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
+                                                   STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 

@@ -28,7 +28,7 @@ class CommentHelper:
             raise e
 
     @classmethod
-    def get_comment_list_by_news_id(cls, uid, news_id):
+    def get_comment_list_by_news_id(cls, uid, token, news_id):
         comment_list = []
         comments = NewsComment.objects.filter(news_id=news_id)
         if comments is not None:
@@ -41,7 +41,7 @@ class CommentHelper:
                     comment_dict['uid'] = ''
                 comment_dict['news_id'] = comment.news_id
                 comment_dict['content'] = comment.content
-                u = UserInfo.find_user_by_id(comment.uid)
+                u = UserInfo.find_user_by_id(comment.uid, token)
                 comment_dict['avatar'] = u.avatar
                 comment_dict['time'] = comment.time
                 comment_dict['user_name'] = u.name

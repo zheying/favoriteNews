@@ -49,7 +49,7 @@ def view_news(req, news_id):
     model['title'] = news.title
     model['source_url'] = news.pageurl
     model['source'] = news.source
-    model['date'] = '2015-04-15 18:00'
+    model['date'] = news.date.strftime('%Y-%m-%d %H:%M')
     model['content'] = news.mobile_html
     content = NewsParser.get_news(news.pageurl, model)
     # return HttpResponse(Response.response({"content": content}))
@@ -122,7 +122,7 @@ def pull_comment_list(req):
             return HttpResponse(Response.responseError(UID_NOT_MATCH_TOKEN, STRING_UID_NOT_MATCH_TOKEN))
         if NewsOperator.find_news_by_id(news_id) is None:
             return HttpResponse(Response.responseError(NO_SUCH_NEWS, STRING_NO_SUCH_NEWS))
-        comment_list = CommentHelper.get_comment_list_by_news_id(uid, news_id)
+        comment_list = CommentHelper.get_comment_list_by_news_id(uid, token, news_id)
         return HttpResponse(Response.response({'list': comment_list}))
     except ValueError, e:
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,

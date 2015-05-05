@@ -78,11 +78,15 @@ class NewsOperator:
 
     @classmethod
     def collect_news(cls, user, news):
-        news_collect = NewsCollect()
-        news_collect.user = user
-        news_collect.news = news
-        news_collect.collect_time = datetime.now(pytz.timezone('Asia/Shanghai'))
-        news_collect.save()
+        try:
+            news_collect = NewsCollect.objects.get(user=user, news=news);
+            news_collect.delete();
+        except ObjectDoesNotExist:
+            news_collect = NewsCollect()
+            news_collect.user = user
+            news_collect.news = news
+            news_collect.collect_time = datetime.now(pytz.timezone('Asia/Shanghai'))
+            news_collect.save()
 
     @classmethod
     def get_collected_news(cls, user, page):

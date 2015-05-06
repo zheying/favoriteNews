@@ -6,6 +6,7 @@ import MySQLdb
 import copy
 import datetime
 from models import *
+from jpype import *
 #from datetime import *
 reload(sys)
 sys.setdefaultencoding('utf-8')

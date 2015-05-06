@@ -52,7 +52,7 @@ class NewsOperator:
             for v in dislike_news_list:
                 # news = news.exclude(id=v.news.id)
                 for v1 in news:
-                    if v.id == v1.id:
+                    if v.news.id == v1.id:
                         news.remove(v1)
 
 

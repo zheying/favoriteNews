@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from business.comment import CommentHelper
 from datetime import datetime
 import pytz
-
+from server.recommend_News import *
 
 class NewsOperator:
 
@@ -20,7 +20,10 @@ class NewsOperator:
                 user = None
         news = []
         if cat == NEWS_CATALOG_RECOMMEND:  #推荐新闻
-            news = SinaNews.objects.order_by('-date')
+            if uid is None:
+                news = SinaNews.objects.order_by('-date')
+            else:
+                news = get_recommend_news(uid)
         elif cat == NEWS_CATALOG_CIVIL:  #国内新闻
             news = SinaNews.objects.filter(cat=STRING_NEWS_CATALOG_CIVIL).order_by('-date')
         elif cat == NEWS_CATALOG_INTERNATIONAL:  #国际新闻
@@ -62,6 +65,8 @@ class NewsOperator:
             item['tags'] = v.tags
             if user is not None:
                 item['collect_status'] = NewsOperator.is_collected_news(user, v)
+                if cat == NEWS_CATALOG_RECOMMEND:
+                    item['recommend'] = True
             else:
                 item['collect_status'] = False
             result.append(item)

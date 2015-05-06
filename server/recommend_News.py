@@ -92,13 +92,13 @@ def gen_randomNews(uid):
 
 #计算用户标签和新闻标签的相似度
 def simarlarity(tag, cat):
-    jvmpath = getDefaultJVMPath()
-    startJVM(jvmpath, "-ea", "-Djava.class.path=/home/zengzheying/project/favoriteNews/server/WORD2VEC.jar")
-    TA = JPackage('com.ansj.vec').WORD2VEC
-    jd = TA()
-    print jd is None
-    jd.loadModel("/home/zengzheying/project/favoriteNews/server/vectors1.bin")
-    return  jd.similar(tag, cat)
+    # jvmpath = getDefaultJVMPath()
+    # startJVM(jvmpath, "-ea", "-Djava.class.path=/home/zengzheying/project/favoriteNews/server/WORD2VEC.jar")
+    # TA = JPackage('com.ansj.vec').WORD2VEC
+    # jd = TA()
+    # print jd is None
+    # jd.loadModel("/home/zengzheying/project/favoriteNews/server/vectors1.bin")
+    return 0
 
 #根据用户uid产生的用户长期兴趣标签、短期兴趣标签和随机推荐标签
 def get_recommend_news(user_id):

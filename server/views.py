@@ -43,6 +43,14 @@ def get_news(req):
 def view_news(req, news_id):
     news = SinaNews.objects.get(id=news_id)
     uid = req.GET.get('uid', None)
+    recommend_type = req.GET.get('recommend_type', RECOMMEND_NO)
+    if int(recommend_type) == RECOMMEND_YES:
+        try:
+            recommend_news = RecommendNewsHistory.objects.get(uid=uid, news_id=news_id)
+            recommend_news.visited = 1
+            recommend_news.save()
+        except ObjectDoesNotExist:
+            pass
     UidTagHistory.upateUserViewNewsTags(uid, news.tags)
     ShortTimeHobby.updateHobby(uid, news.tags)
     model = {}

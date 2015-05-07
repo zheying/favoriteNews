@@ -64,7 +64,7 @@ class NewsOperator:
             item['title'] = v.title
             item['source'] = v.source
             item['pageurl'] = v.pageurl
-            item['date'] = v.date.replace(tzinfo=pytz.timezone('Asia/Shanghai'))
+            item['date'] = v.date.replace(tzinfo=pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M')
             item['picurl'] = v.picurl
             item['comment_count'] = CommentHelper.get_comment_count_by_news_id(v.id)
             item['tags'] = v.tags
@@ -72,6 +72,11 @@ class NewsOperator:
                 item['collect_status'] = NewsOperator.is_collected_news(user, v)
                 if cat == NEWS_CATALOG_RECOMMEND:
                     item['recommend'] = True
+                    try:
+                        recommend_news = RecommendNewsHistory.objects.get(uid=user.uid, news_id=v.id)
+                    except ObjectDoesNotExist:
+                        recommend_news = RecommendNewsHistory(uid=user.uid, news_id=v.id, visited=0)
+                        recommend_news.save()
             else:
                 item['collect_status'] = False
             result.append(item)

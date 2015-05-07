@@ -139,3 +139,13 @@ class UserShare(models.Model):
         db_table = 'user_share'
         unique_together = ('user', 'news')
 
+class RecommendNewsHistory(models.Model):
+    uid = models.CharField(max_length=80, primary_key=True)
+    news_id = models.IntegerField(primary_key=True)
+    visited = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'recommend_news_history'
+        unique_together = ('uid', 'news_id')
+

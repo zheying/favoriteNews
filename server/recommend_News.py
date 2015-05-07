@@ -6,7 +6,7 @@ import MySQLdb
 import copy
 import datetime
 from models import *
-from jpype import *
+# from jpype import *
 #from datetime import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -114,7 +114,7 @@ def get_recommend_news(user_id):
     recommend_News = longHobbies_rec + shortHobbies_rec + randomHobbies_rec #输出长期兴趣标签、短期兴趣标签和随机推荐的新闻类别；
     # cursor.execute("select id,tags from sina_news")
     # ID_cats = cursor.fetchall()
-    ID_cats = SinaNews.objects.filter(date__gte=datetime.datetime.now() - datetime.timedelta(4))
+    ID_cats = SinaNews.objects.filter(date__gte=datetime.datetime.now() - datetime.timedelta(4)).order_by('-date')
     ID_cats = list(ID_cats)
     #print ID_cats
     for tag in recommend_News:

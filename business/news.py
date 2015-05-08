@@ -45,7 +45,7 @@ class NewsOperator:
         start = page * PAGE_SIZE
         end = (page + 1) * PAGE_SIZE
 
-        news = list(news[start:end])
+        news = list(news[start:100])
 
         if user is not None:
             dislike_news_list = NewsOperator.get_dislike_news_list(user)
@@ -58,7 +58,7 @@ class NewsOperator:
 
 
         result = []
-        for v in news:
+        for v in news[:PAGE_SIZE]:
             item = {}
             item['cat'] = v.cat
             item['id'] = v.id

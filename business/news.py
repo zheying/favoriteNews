@@ -4,9 +4,10 @@ from server.const import *
 from server.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from business.comment import CommentHelper
+from server.recommend_News import *
 from datetime import datetime
 import pytz
-from server.recommend_News import *
+
 
 class NewsOperator:
 
@@ -95,7 +96,7 @@ class NewsOperator:
     def collect_news(cls, user, news):
         try:
             news_collect = NewsCollect.objects.get(user=user, news=news);
-            news_collect.delete();
+            news_collect.delete()
         except ObjectDoesNotExist:
             news_collect = NewsCollect()
             news_collect.user = user

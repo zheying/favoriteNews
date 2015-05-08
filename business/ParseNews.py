@@ -149,7 +149,7 @@ class NewsParser:
                 return unicode(art_content)
 
             '''articleContent 内容'''
-            article_content = soup.find('div', attrs={'class': 'articleContent'})
+            article_content = soup.find('div', attrs={'id': 'j_articleContent'})
             if article_content is not None:
                 return unicode(article_content)
 
@@ -170,12 +170,14 @@ class NewsParser:
 
     @classmethod
     def parse_data_in_database(cls):
-        news_list = SinaNews.objects.filter(mobile_html='')
+        news_list = SinaNews.objects.filter(mobile_html='').order_by('-id')[:100]
+        # news_list = SinaNews.objects.filter(pageurl='http://finance.sina.com.cn/china/20150508/175422138849.shtml')
         print '还有', len(news_list), '条需要处理'
         for news in news_list:
             if news.mobile_html is None or news.mobile_html.strip() == '':
                 try:
                     html = NewsParser.get_mobile_news(news.pageurl)
+                    # print html
                     if html is not None:
                         news.mobile_html = html
                     else:

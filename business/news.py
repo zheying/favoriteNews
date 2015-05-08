@@ -101,12 +101,12 @@ class NewsOperator:
             news_collect = NewsCollect()
             news_collect.user = user
             news_collect.news = news
-            news_collect.collect_time = datetime.now(pytz.timezone('Asia/Shanghai'))
+            news_collect.collect_time = datetime.now()
             news_collect.save()
 
     @classmethod
     def get_collected_news(cls, user, page):
-        news_list = NewsCollect.objects.filter(user=user)
+        news_list = NewsCollect.objects.filter(user=user).order_by('-collect_time')
         start = page * PAGE_SIZE
         end = (page + 1) * PAGE_SIZE
         result = []
@@ -117,7 +117,7 @@ class NewsOperator:
             item['title'] = v.news.title
             item['source'] = v.news.source
             item['pageurl'] = v.news.pageurl
-            item['date'] = v.collect_time.replace(tzinfo=pytz.timezone('Asia/Shanghai'))
+            item['date'] = v.collect_time.replace(tzinfo=pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M')
             item['picurl'] = v.news.picurl
             item['comment_count'] = CommentHelper.get_comment_count_by_news_id(v.news.id)
             item['tags'] = v.news.tags

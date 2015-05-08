@@ -45,7 +45,7 @@ class NewsOperator:
         start = page * PAGE_SIZE
         end = (page + 1) * PAGE_SIZE
 
-        news = news[start:end]
+        news = list(news[start:end])
 
         if user is not None:
             dislike_news_list = NewsOperator.get_dislike_news_list(user)

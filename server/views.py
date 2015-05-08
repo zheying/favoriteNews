@@ -28,6 +28,7 @@ def login(req):
         return HttpResponse(Response.responseError(NOT_AVAILABLE_REQUEST_PARAMETERS,
                                                    STRING_NOT_AVAILABLE_REQUEST_PARAMETERS))
 #用户获取新闻
+@csrf_exempt
 def get_news(req):
     try:
         uid = req.GET.get('uid', None)
